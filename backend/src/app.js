@@ -41,10 +41,14 @@ app.use((error, req, res, next) => {
     });
   }
 
-  return res.status(500).json({
+  const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500
+    ? error.status
+    : 500;
+
+  return res.status(status).json({
     error: {
-      code: 'INTERNAL_ERROR',
-      message: 'Ocorreu um erro interno.',
+      code: status < 500 ? 'INVALID_REQUEST' : 'INTERNAL_ERROR',
+      message: status < 500 ? 'A solicitação enviada é inválida.' : 'Ocorreu um erro interno.',
     },
   });
 });
