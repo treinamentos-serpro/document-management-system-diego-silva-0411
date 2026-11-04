@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: fileSizeLimit },
+  limits: { fileSize: fileSizeLimit, fields: 0 },
 });
 
 router.post(
