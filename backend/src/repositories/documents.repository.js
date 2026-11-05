@@ -23,6 +23,10 @@ function findOwnedById(id, owner) {
   return document;
 }
 
+function deleteById(id) {
+  return documents.delete(id);
+}
+
 async function removeStoredFile(storagePath) {
   try {
     await fs.unlink(storagePath);
@@ -37,5 +41,6 @@ module.exports = {
   create,
   findAllByOwner,
   findOwnedById,
+  deleteById,
   removeStoredFile,
 };
