@@ -4,12 +4,19 @@ const { once } = require('node:events');
 const path = require('node:path');
 const app = require('../src/app');
 const documentsRepository = require('../src/repositories/documents.repository');
+const resolveStoragePath = require('../src/utils/storage-path');
 
 // Teste de fumaça do seed: garante que o app Express foi exportado.
 // Novos testes serão adicionados durante os Steps 2, 6 e 7 com auxílio do Copilot.
 test('o app backend é exportado', () => {
   assert.ok(app, 'o app deve estar definido');
   assert.strictEqual(typeof app, 'function', 'o app Express deve ser uma função');
+});
+
+test('caminhos de documentos não podem sair do diretório de armazenamento', () => {
+  const outsideStoragePath = path.resolve(__dirname, '../../README.md');
+
+  assert.throws(() => resolveStoragePath(outsideStoragePath), /Invalid document storage path/);
 });
 
 test('upload, listagem e download respeitam o dono do documento', async (t) => {

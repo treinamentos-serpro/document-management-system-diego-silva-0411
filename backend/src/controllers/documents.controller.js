@@ -1,4 +1,5 @@
 const documentsService = require('../services/documents.service');
+const resolveStoragePath = require('../utils/storage-path');
 
 function requireUser(req, res, next) {
   const owner = req.get('X-User-Id')?.trim();
@@ -46,7 +47,7 @@ function downloadDocument(req, res, next) {
     });
   }
 
-  return res.download(document.storagePath, document.originalName, (error) => {
+  return res.download(resolveStoragePath(document.storagePath), document.originalName, (error) => {
     if (error) {
       next(error);
     }

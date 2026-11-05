@@ -1,4 +1,5 @@
 const fs = require('node:fs/promises');
+const resolveStoragePath = require('../utils/storage-path');
 
 const documents = new Map();
 
@@ -29,7 +30,7 @@ function deleteById(id) {
 
 async function removeStoredFile(storagePath) {
   try {
-    await fs.unlink(storagePath);
+    await fs.unlink(resolveStoragePath(storagePath));
   } catch (error) {
     if (error.code !== 'ENOENT') {
       throw error;
