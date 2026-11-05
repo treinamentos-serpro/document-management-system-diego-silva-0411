@@ -1,4 +1,5 @@
 const fs = require('node:fs/promises');
+const resolveStoragePath = require('../utils/storage-path');
 
 const documents = new Map();
 
@@ -23,9 +24,13 @@ function findOwnedById(id, owner) {
   return document;
 }
 
+function deleteById(id) {
+  return documents.delete(id);
+}
+
 async function removeStoredFile(storagePath) {
   try {
-    await fs.unlink(storagePath);
+    await fs.unlink(resolveStoragePath(storagePath));
   } catch (error) {
     if (error.code !== 'ENOENT') {
       throw error;
@@ -37,5 +42,6 @@ module.exports = {
   create,
   findAllByOwner,
   findOwnedById,
+  deleteById,
   removeStoredFile,
 };
