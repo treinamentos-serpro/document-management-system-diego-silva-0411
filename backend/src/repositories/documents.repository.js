@@ -2,26 +2,15 @@ const fs = require('node:fs/promises');
 
 const documents = new Map();
 
-function toPublicDocument(document) {
-  return {
-    id: document.id,
-    originalName: document.originalName,
-    size: document.size,
-    uploadedAt: document.uploadedAt,
-    owner: document.owner,
-  };
-}
-
 function create(document) {
   documents.set(document.id, document);
-  return toPublicDocument(document);
+  return document;
 }
 
 function findAllByOwner(owner) {
   return [...documents.values()]
     .filter((document) => document.owner === owner)
-    .sort((left, right) => right.uploadedAt.localeCompare(left.uploadedAt))
-    .map(toPublicDocument);
+    .sort((left, right) => right.uploadedAt.localeCompare(left.uploadedAt));
 }
 
 function findOwnedById(id, owner) {
@@ -31,10 +20,7 @@ function findOwnedById(id, owner) {
     return null;
   }
 
-  return {
-    ...toPublicDocument(document),
-    storagePath: document.storagePath,
-  };
+  return document;
 }
 
 async function removeStoredFile(storagePath) {
